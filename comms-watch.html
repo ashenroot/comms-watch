@@ -445,7 +445,7 @@ td.reason{max-width:340px;white-space:normal}
 
 <div class="tabs" id="tabs">
   <button data-tab="us"  aria-pressed="true">US Comms</button>
-  <button data-tab="ga"  aria-pressed="false"><span class="stateName">Georgia</span> Comms</button>
+  <button data-tab="ga"  aria-pressed="false"><span class="stateName">Your state</span> Comms</button>
   <button data-tab="rf"  aria-pressed="false">RF &amp; Propagation</button>
   <button data-tab="cp"  aria-pressed="false">Coupling</button>
   <button data-tab="am"  aria-pressed="false">Amateur &amp; Emcomm</button>
@@ -511,7 +511,7 @@ td.reason{max-width:340px;white-space:normal}
   </section>
 </div>
 
-<!-- ==================== TAB 2 — GEORGIA COMMS ==================== -->
+<!-- ==================== TAB 2 — STATE COMMS ==================== -->
 <div class="tabpane hidden" id="pane-ga">
 
   <section>
@@ -519,20 +519,20 @@ td.reason{max-width:340px;white-space:normal}
   </section>
 
   <section>
-    <h2 class="sec"><span class="stateName">Georgia</span> points of concern</h2>
+    <h2 class="sec"><span class="stateName">Your state</span> points of concern</h2>
     <div class="alerts" id="gaAlerts"><span class="skel">Loading&hellip;</span></div>
   </section>
 
   <section>
     <div class="cols two">
       <div class="card">
-        <h3><span class="stateName">Georgia</span> reachability &mdash; 7 days</h3>
+        <h3><span class="stateName">Your state</span> reachability &mdash; 7 days</h3>
         <p class="sub" id="gaChartSub">responsive /24 blocks and packet loss across the state</p>
         <div class="legend" id="gaLegend"></div>
         <div class="chartbox"><svg class="chart" id="gaChart" height="260"></svg><div class="tip" id="gaTip"></div></div>
       </div>
       <div class="card">
-        <h3>Round-trip latency into <span class="stateName">Georgia</span></h3>
+        <h3>Round-trip latency into <span class="stateName">Your state</span></h3>
         <p class="sub">Median and p90 from IODA's active probing &mdash; congestion shows here before loss does</p>
         <div class="legend" id="gaLatLegend"></div>
         <div class="chartbox"><svg class="chart" id="gaLatChart" height="260"></svg><div class="tip" id="gaLatTip"></div></div>
@@ -541,7 +541,7 @@ td.reason{max-width:340px;white-space:normal}
   </section>
 
   <section>
-    <h2 class="sec">Concentration &mdash; where <span class="stateName">Georgia</span>’s internet physically is
+    <h2 class="sec">Concentration &mdash; where <span class="stateName">Your state</span>’s internet physically is
       <span class="lag" id="pdbLag">PeeringDB &middot; live</span></h2>
     <p class="note" id="concNote">The story here is not reachability, it is concentration. A small number of
       buildings carry most of the state’s interconnection. This is the communications analogue of one
@@ -557,7 +557,7 @@ td.reason{max-width:340px;white-space:normal}
           down the short path between them, and traffic reroutes long.</div>
       </div>
       <div class="card">
-        <h3>Internet exchanges in <span class="stateName">Georgia</span></h3>
+        <h3>Internet exchanges in <span class="stateName">Your state</span></h3>
         <p class="sub">Participant counts and speeds, from each exchange's own PeeringDB record</p>
         <div class="tablewrap"><table id="ixTable">
           <thead><tr><th class="l">Exchange</th><th class="l">City</th>
@@ -569,7 +569,7 @@ td.reason{max-width:340px;white-space:normal}
   </section>
 
   <section>
-    <h2 class="sec">Networks serving <span class="stateName">Georgia</span> <span class="lag" id="gaAsnLag"></span></h2>
+    <h2 class="sec">Networks serving <span class="stateName">Your state</span> <span class="lag" id="gaAsnLag"></span></h2>
     <p class="note">Autonomous systems IODA geolocates into the selected state, ranked by how much of
       its probed address space they hold.</p>
     <div class="tablewrap"><table id="gaAsnTable">
@@ -728,7 +728,7 @@ td.reason{max-width:340px;white-space:normal}
   <section>
     <div class="cols two">
       <div class="card">
-        <h3><span class="stateName">Georgia</span> storm reports &mdash; last 7 days</h3>
+        <h3><span class="stateName">Your state</span> storm reports &mdash; last 7 days</h3>
         <p class="sub" id="lsrSub">Iowa Environmental Mesonet</p>
         <div class="tablewrap"><table id="lsrTable">
           <thead><tr><th class="mono">When</th><th class="l">Type</th><th class="mono">Mag</th>
@@ -1126,7 +1126,7 @@ const NOT_CONNECTED = [
       "net only appears once its control operator opens it in the client. &ldquo;Nets starting in the next "+
       "30 minutes&rdquo; would need a maintained schedule cross-referenced against the clock." },
   { t:"FCC antenna structure registrations", why:"bulk download, not an API",
-    d:"Tower counts per county would sharpen the Georgia concentration panel, but the ASR database is "+
+    d:"Tower counts per county would sharpen the state concentration panel, but the ASR database is "+
       "published as a weekly bulk file. It would have to be reduced to a snapshot and embedded, the same "+
       "way the shortwave schedule is." },
   { t:"EiBi shortwave schedule", why:"no CORS headers",
@@ -1862,8 +1862,8 @@ const US_ASNS = [
 
 const IODA = "https://api.ioda.inetintel.cc.gatech.edu/v2/";
 /* The region code comes from the Setup tab, resolved against IODA's own US
-   region list at load. Georgia is the default because that is where this was
-   built; nothing else in the page assumes it. Note that IODA's entity search
+   region list at load, and follows the grid square (see resolveStateFromGrid).
+   Nothing in the page assumes a particular state. Note that IODA's entity search
    for "Georgia" also returns the country — the US state is disambiguated by
    its country_code attribute, which is why the list is filtered rather than
    searched by name. */
@@ -3205,7 +3205,7 @@ const lvlSev = l => l === "critical" ? "critical" : l === "warning" ? "warning" 
    ========================================================================= */
 
 function renderState(){
-  $$(".stateName").forEach(n => { n.textContent = SETTINGS.stateName; });
+  $$(".stateName").forEach(n => { n.textContent = SETTINGS.stateName || "Your state"; });
   const a = AN.ga;
   const sub = $("#gaChartSub");
   if (sub) sub.textContent = "IODA region/" + SETTINGS.iodaRegion +
